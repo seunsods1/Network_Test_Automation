@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html lang = "en">
+  <head>
+    <title>Optical Test Violation Report</title>
+    <meta charset = "UTF-8" />
+    <style type = "text/css">
+      table, td, th {
+        border: 1px solid black;
+      }
+      span {  content: "\2713";}
+      #returnB {text-align: right;}
+    </style>
+  </head>
+
+<body>
+  <h1 style="text-align:center">Optical Test Violation Report</h1>
+
+  <pre><p>Total errors found = {{ err_size }}  DOM errors = {{ dom_err_cnt }} IDPROM errors = {{ idprom_err_cnt }} Inventory errors = {{ inv_err_cnt }} </p></pre>
+
+  {% if dom_data %}
+    <h3>DOM Violation Report</h3>
+    {% for ind,data in dom_data.items() %}
+      {% for i in range(data|length) %}
+        {% if i in dom_err_loc[ind] %}
+        <pre><span style="background-color:red">{{ data[i] }}</span></pre>
+        {% else %}
+        <pre>{{ data[i] }}</pre>
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  {% endif %}
+
+  {% if idprom_data %}
+    <h3>IDPROM Violation Report</h3>
+    {% for i in range(idprom_data|length) %}
+      {% if i in idprom_err_loc %}
+      <pre><span style="background-color:red">{{ idprom_data[i] }}</span></pre>
+      {% else %}
+      <pre>{{ idprom_data[i] }}</pre>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+  {% if inv_data %}
+    <h3>Inventory Violation Report</h3>
+    {% for i in range(inv_data|length) %}
+      {% if i in inv_err_loc %}
+       <pre><span style="background-color:red">{{ inv_data[i] }}</span></pre>
+      {% else %}
+       <pre>{{ inv_data[i] }}</pre>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+<br>
+    <div id="returnB"
+      <section>
+          <form action="{{url_for('usr_inp_process')}}" method="post">
+            <article>
+              <h4>
+                    Click the button below to return to test page.
+              </h4>
+              <p><button type="submit">Return</button></p>
+            </article>
+          </form>
+      </section>
+    </div>
+ </body>

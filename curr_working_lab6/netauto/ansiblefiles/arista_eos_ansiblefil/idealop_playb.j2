@@ -1,0 +1,53 @@
+---
+ - name: Ideal Optic Playb - Issue SHOW command to gather the DOM, IDPROM and inventory data of the ideal optic selected by user.
+   hosts: {{ sw_vendor }}_{{ sw_func }}
+   connection: local
+   gather_facts: no
+
+   vars:
+     os: eos
+     ansible_python_interpreter: /usr/bin/python3
+     ansible_become: yes
+     ansible_become_method: enable
+     ansible_network_os: arista.eos.eos
+     ansible_user: {{ username }}
+     ansible_password: {{ passwd }}
+     ansible_connection: ansible.netcommon.network_cli
+
+   tasks:
+    - name: Run cli_command on Arista EOS and display results
+      block:
+      - name: Run cli_command on Arista EOS
+        ansible.netcommon.cli_command:
+          command: show interface {{ id_int }} transceiver detail
+        register: idealop_0
+        run_once: true
+
+      - name: Run cli_command on Arista EOS
+        ansible.netcommon.cli_command:
+          command: show interfaces {{ id_int }} transceiver hardware
+        register: idealop_1
+        run_once: true
+
+      - name: Run cli_command on Arista EOS
+        ansible.netcommon.cli_command:
+          command: show inventory | ex Not Present
+        register: idealop_2
+        run_once: true
+
+    - name: Using Jinja shorthand syntax, extract DOM data.
+      debug:
+              var: idealop_0.stdout_lines
+
+    - name: Using Jinja shorthand syntax, extract IDPROM data.
+      debug:
+              var: idealop_1.stdout_lines
+
+    - name: Using Jinja shorthand syntax, extract Inventory data.
+      debug:
+              var: idealop_2.stdout_lines
+
+    - name: Write Data to a file
+      template:
+        src: ./idealop.j2
+        dest: /netauto/idealop.json

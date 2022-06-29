@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html lang = "en">
+  <head>
+    <title>Optical Test Report</title>
+    <meta charset = "UTF-8" />
+    <style type = "text/css">
+    table, td, th {
+      border: 1px solid black;
+    }
+    span {  content: "\2713";}
+    </style>
+  </head>
+
+  <body>
+    <section>
+            <h3>Authentication Page </h3>
+
+            <form action="{{url_for('enter_so')}}">
+                    <article>
+                    <p>
+
+                          <p>
+                            Enter the Testbed Data (Conn type, username, pass e.t.c.):
+                            <br>
+                            Enter switch vendor:
+                            <select name='tb_sw_vendor'>
+                              <option value ='cisco'>cisco (ios)</option>
+                              <option value ='arista'>Arista (eos)</option>
+                              <option value ='juniper'>Juniper (junos)</option>
+                            </select>
+                            <br>
+                            <br>
+                            IP address:
+                            <input type="text" name="tb_ip">
+                            <br>
+                            or
+                            <br>
+                            Serial port:
+                            <input type="text" name="tb_com">
+                            <br>
+                            <br>
+                            Username:
+                            <input type="text" name="tb_usr">
+                            <br>
+                            <br>
+                            Password:
+                            <input type="text" name="tb_pass">
+                            <br>
+                          </p>
+
+                          <br>
+
+                          <p>
+                            Enter the Endpoint 1 Data (Conn type, username, pass e.t.c.):
+                            <br>
+                            Enter switch vendor:
+                            <select name='end1_sw_vendor'>
+                              <option value ='cisco'>cisco (ios)</option>
+                              <option value ='arista'>Arista (eos)</option>
+                              <option value ='juniper'>Juniper (junos)</option>
+                            </select>
+                            <br>
+                            <br>
+                            IP address:
+                            <input type="text" name="end1_ip">
+                            <br>
+                            or
+                            <br>
+                            Serial port:
+                            <input type="text" name="end1_com">
+                            <br>
+                            <br>
+                            Username:
+                            <input type="text" name="end1_usr">
+                            <br>
+                            <br>
+                            Password:
+                            <input type="text" name="end1_pass">
+                            <br>
+                          </p>
+
+                          <br>
+
+                          <p>
+                            Enter the Endpoint 2 Data (Conn type, username, pass e.t.c.):
+                            <br>
+                            Enter switch vendor:
+                            <select name='end2_sw_vendor'>
+                              <option value ='cisco'>cisco (ios)</option>
+                              <option value ='arista'>Arista (eos)</option>
+                              <option value ='juniper'>Juniper (junos)</option>
+                            </select>
+                            <br>
+                            <br>
+                            IP address:
+                            <input type="text" name="end2_ip">
+                            <br>
+                            or
+                            <br>
+                            Serial port:
+                            <input type="text" name="end2_com">
+                            <br>
+                            <br>
+                            Username:
+                            <input type="text" name="end2_usr">
+                            <br>
+                            <br>
+                            Password:
+                            <input type="text" name="end2_pass">
+                            <br>
+                          </p>
+                        <p><input type="submit" value="Submit"></p>
+                    </p>
+                    </article>
+            </form>
+    </section>
+  </body>
+
+</html>

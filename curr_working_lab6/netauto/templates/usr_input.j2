@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html lang = "en">
+  <head>
+    <title>Optical Test Report</title>
+    <meta charset = "UTF-8" />
+    <style type = "text/css">
+    table, td, th {
+      border: 1px solid black;
+    }
+    span {  content: "\2713";}
+    </style>
+  </head>
+
+  <body>
+    <section>
+            <form action="{{url_for('usr_inp_process')}}">
+                    <article>
+                    <p>
+
+                          <p>
+                            Enter the attenuation used (e.g. 5 or 10):
+                            <br>
+                            <input type="text" name="atten">
+                            <br>
+                          </p>
+
+                          <br>
+
+                          <p>
+                            Enter the location of the testbed optics in switch (e.g pic-slot 0 of Juniper switch (main slot) = 0, and subsequent slots = (1,2.....) ):
+                            <br>
+                            <input type="text" name="int_slot">
+                            <br>
+                          </p>
+
+                          <br>
+
+                          <p>
+                            Enter the interface ID of the optic to be compared against (e.g 1,2,3,4.....):
+                            <br>
+                            <input type="text" name="ideal_op_id">
+                            <br>
+                             <p><input type="submit" value="Submit"></p>
+                          </p>
+
+                    </p>
+                    </article>
+            </form>
+    </section>
+  </body>
+
+</html>

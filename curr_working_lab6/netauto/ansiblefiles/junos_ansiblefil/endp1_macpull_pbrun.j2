@@ -1,0 +1,31 @@
+---
+ - name: Endpoint1 MAC Pull - Issue SHOW command to gather the Chassis MAC addres of switch used as endpoint
+   hosts: {{ sw_vendor }}_{{ sw_func }}
+   roles:
+     - Juniper.junos
+   connection: local
+   gather_facts: no
+
+   tasks:
+    - name: TASK1 - ISSUE SHOW CMDS
+      juniper_junos_command:
+        commands:
+         - "show chassis mac-addresses"
+        provider:
+                  username: {{ username }}
+                  password: {{ passwd }}
+                  host: {{ ' "{{ inventory_hostname }}" '}}
+
+      register: endp1_mac
+      run_once: true
+
+    - name: Debug show cmd response with Jinja shorthand syntax
+      debug:
+              # var: idprom_val.stdout[:]
+              # var: idprom_val.stdout[0][:]
+              var: endp1_mac['stdout_lines']
+
+    - name: Write Data to a file
+      template:
+        src: ./endp1_mac.j2
+        dest: ../../endp1_mac.json

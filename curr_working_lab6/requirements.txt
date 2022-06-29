@@ -1,0 +1,8 @@
+Jinja2==2.11.2
+ansible_playbook_runner
+ansible
+mitogen==0.2.9
+ncclient
+flask
+wget
+docker

@@ -1,0 +1,35 @@
+---
+ - name: Endpoint1 MAC Pull - Issue SHOW command to gather the Chassis MAC addres of switch used as endpoint
+   hosts: {{ sw_vendor }}_{{ sw_func }}
+   connection: ansible.netcommon.network_cli
+   gather_facts: no
+
+   vars:
+     os: ios
+     ansible_python_interpreter: /usr/bin/python3
+     ansible_become: yes
+     ansible_become_method: enable
+     ansible_network_os: cisco.ios.ios
+     ansible_user: {{ username }}
+     ansible_password: {{ passwd }}
+     ansible_connection: ansible.netcommon.network_cli
+
+   tasks:
+    - name: Run cli_command on Cisco IOS and display results
+      block:
+      - name: Run cli_command on Cisco IOS
+        ansible.netcommon.cli_command:
+          command: show interface status | ex No
+        register: int_pull
+        run_once: true
+
+    - name: Debug show cmd response with Jinja shorthand syntax
+      debug:
+              # var: idprom_val.stdout[:]
+              # var: idprom_val.stdout[0][:]
+              var: int_pull.stdout_lines
+
+    - name: Write Data to a file
+      template:
+        src: ./int_pull.j2
+        dest: /netauto/int_pull.json

@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html lang = "en">
+  <head>
+    <title>Optical Test Report</title>
+    <meta charset = "UTF-8" />
+    <style type = "text/css">
+    table, td, th {
+      border: 1px solid black;
+    }
+    span {  content: "\2713";}
+    </style>
+  </head>
+
+  <body>
+    <section>
+            <article>
+               <p>
+                 Connect optic being tested with endpoint and run traffic (PING) test.
+               </p>
+            </article>
+
+            <form action="{{url_for('gen_optical_rep')}}" method="post">
+                    <article>
+                        <p>Click ENTER to proceed with optical test.</p>
+                        <p>
+                          <button type="submit">ENTER</button>
+                           {% for sn in optics_und_test %}
+                            Succesfully tested optics in port {{ sn }}.
+                           {% endfor %}
+                        </p>
+                    </article>
+            </form>
+
+            <form action="{{url_for('disp_optical_rep')}}" method="post">
+                    <article>
+                      <p>Click FINISH to end optical test and generate final report.</p>
+                      <P>
+                        <button type="submit">FINISH</button>
+                        {{ err_msg2 }}
+                      </p>
+                    </article>
+            </form>
+    </section>
+  </body>
+
+</html>

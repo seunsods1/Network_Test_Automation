@@ -1,0 +1,38 @@
+###########To get model of switch###################################
+---
+- name: Gather model name from Junos devices
+  hosts: juniper_testbed
+  connection: local
+  gather_facts: no
+  roles:
+    - Juniper.junos
+  tasks:
+    - name: Get model name.
+      juniper_junos_facts:
+        provider:
+                  username: {{ username }}
+                  password: {{ passwd }}
+                  host:  {{' "{{ inventory_hostname }}" '}}
+      register: facts
+
+    - name: Debug show cmd response with Jinja shorthand syntax
+      debug:
+             var: facts['ansible_facts']['junos']['model']
+
+    - name: Debug show cmd response with Jinja shorthand syntax
+      template:
+             src: ./sw_model.j2
+             dest: ../../sw_model.json
+
+###########################To get time and date stamp##########################################
+- name: Gather date stamp from ansible.
+  hosts: localhost
+
+  tasks:
+    - name: Ansible fact - ansible_date_time
+      debug:
+             var: ansible_date_time['date']
+    - name: Debug show cmd response with Jinja shorthand syntax
+      template:
+             src: ./ansible_date_time.j2
+             dest: ../../ansible_date_time.json

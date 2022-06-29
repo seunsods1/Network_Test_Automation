@@ -1,0 +1,5 @@
+{{'{{ opdata_pull_a.stdout_lines }}'}}
+{% for id in ids %}
+{{'{{ opdata_pull_'}}{{ id }}{{'.stdout_lines }}'}}
+{% endfor %}
+{{'{{ opdata_pull_b.stdout_lines }}'}}

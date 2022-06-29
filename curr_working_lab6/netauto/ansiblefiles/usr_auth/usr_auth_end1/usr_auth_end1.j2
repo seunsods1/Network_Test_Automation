@@ -1,0 +1,8 @@
+{%- for k,v in auth_dict.items() %}
+  {%- if k == 'End1' %}
+  base_provider:
+          username: {{ v['usrname'] }}
+          password: {{ v['pass'] }}
+          host: {{' "{{ inventory_hostname }}" '}}
+  {%- endif %}
+{%- endfor %}

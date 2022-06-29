@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html lang = "en">
+  <head>
+    <title>Optical Test Report</title>
+    <meta charset = "UTF-8" />
+    <style type = "text/css">
+    table, td, th {
+      border: 1px solid black;
+    }
+    span {  content: "\2713";}
+    </style>
+  </head>
+
+  <body>
+    <section>
+            <form action="{{url_for('enter_so_process')}}">
+                    <article>
+                    <p>
+                          <p>
+                            Scan or Enter Sales Order (S.O) Number:
+                            <input type="text" name="so_num">
+                            <br>
+                            <p><input type="submit" value="Submit"></p>
+                          </p>
+                    </p>
+                    </article>
+            </form>
+    </section>
+  </body>
+
+</html>

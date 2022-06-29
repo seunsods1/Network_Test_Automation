@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html lang = "en">
+  <head>
+    <title>Optical Test Report</title>
+    <meta charset = "UTF-8" />
+    <style type = "text/css">
+      table, td, th {
+        border: 1px solid black;
+      }
+      span {  content: "\2713";}
+      #returnB {text-align: right;}
+    </style>
+  </head>
+
+<body>
+  <h1>Optical Test Report</h1>
+  <h2>DOM Report</h2>
+  <table>
+     <thead>
+     <tr>
+     <th></th>
+     <th>Serial Number</th>
+     <th>Temp within Thresh</th>
+     <th>Volt within Thresh</th>
+     <th>TX within Thresh</th>
+     <th>RX within Thresh</th>
+     <th>Optical Power Budget Transmit port (TX) Satisfied</th>
+     <th>Optical Power Budget Transmit port Deviation</th>
+     <th>Optical Power Budget Receive port (RX) Satisfied</th>
+     <th>Optical Power Budget Receive port Deviation</th>
+     <th>Result (Pass or Fail)</th>
+     </tr>
+     </thead>
+
+     {% for interface,opval in optest.items() %}
+       <tbody>
+       <tr>
+    	   <td>{{ interface }}</td>
+    	   <td>{{ opval.serial_num }}</td>
+    	   <td>{{ opval.tempval }}<br>{{ opval.temp_pass }}</td>
+    	   <td>{{ opval.voltval }}<br>{{ opval.volt_pass }}</td>
+    	   <td>{{ opval.txval }}<br>{{ opval.tx_pass }}</td>
+         <td>{{ opval.rxval }}<br>{{ opval.rx_pass }}</td>
+         <td>{{ opval.powerbudget_pass_tx }}</td>
+         <td>{{ opval.powerbudget_dev_tx }}<br>{{ opval.powerbudget_dev_tx_percent }}</td>
+         <td>{{ opval.powerbudget_pass_rx }}</td>
+         <td>{{ opval.powerbudget_dev_rx }}<br>{{ opval.powerbudget_dev_rx_percent }}</td>
+    	   {#
+    	   The following if statement checks if any of the checks fails (by returning False) and returns "Fail" if so.
+    	   #}
+    	   {% if not opval.temp_pass or not opval.volt_pass or not opval.tx_pass or not opval.rx_pass or not opval.powerbudget_pass %}
+    	   <td>Fail</td>
+    	   {% else %}
+    	   <td>Pass</td>
+    	   {% endif %}
+       </tr>
+       </tbody>
+     {% endfor %}
+
+  </table>
+
+    <br>
+    <div id="returnB"
+      <section>
+          <form action="{{url_for('dom_test_stage_disp')}}" method="post">
+            <article>
+              <h4>
+                    Click the button below to return to test page.
+              </h4>
+              <p><button type="submit">Return</button></p>
+            </article>
+          </form>
+      </section>
+    </div>
+ </body>
+</html>

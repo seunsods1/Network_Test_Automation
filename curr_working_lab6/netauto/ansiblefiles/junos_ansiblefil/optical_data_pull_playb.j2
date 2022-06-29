@@ -1,0 +1,39 @@
+---
+ - name: PLAY - ISSUE SHOW COMMAND TO PULL ALL THE OPTICAL DATA FROM ALL THE OPTICS IN TESTBED SWITCH.
+   hosts: {{ sw_vendor }}_{{ sw_func }}
+   roles:
+     - Juniper.junos
+   connection: local
+   gather_facts: no
+
+   tasks:
+    - name: TASK1 - ISSUE SHOW CMDS
+      juniper_junos_command:
+        commands:
+         - "show interfaces diagnostics optics"
+         - "{{ jun_idprom_cmd }}"
+         - "show chassis hardware"
+        provider:
+                  username: {{ username }}
+                  password: {{ passwd }}
+                  host: {{ ' "{{ inventory_hostname }}" '}}
+
+      register: opdata_pull
+      run_once: true
+
+    - name: Using Jinja shorthand syntax, extract DOM data.
+      debug:
+              var: opdata_pull.results[0]['stdout_lines']
+
+    - name: Using Jinja shorthand syntax, extract IDPROM data.
+      debug:
+              var: opdata_pull.results[1]['stdout_lines']
+
+    - name: Using Jinja shorthand syntax, extract Inventory data.
+      debug:
+              var: opdata_pull.results[2]['stdout_lines']
+
+    - name: Write Data to a file
+      template:
+        src: ./opdata_pull.j2
+        dest: ../../opdata_pull.txt

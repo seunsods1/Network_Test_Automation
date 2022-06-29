@@ -1,0 +1,31 @@
+---
+ - name: PLAY1 - ISSUE SHOW COMMAND FOR DOM AND IDPROM
+   hosts: {{ sw_vendor }}_{{ sw_func }}
+   roles:
+     - Juniper.junos
+   connection: local
+   gather_facts: no
+
+   tasks:
+    - name: TASK1 - ISSUE SHOW CMDS
+      juniper_junos_command:
+        commands:
+        {% for int_id in interface_lst %}
+         - "show interfaces diagnostics optics {{ int_id }}"
+        {% endfor %}
+        provider:
+                  username: {{ username }}
+                  password: {{ passwd }}
+                  host: {{ ' "{{ inventory_hostname }}" '}}
+
+      register: op_power_chk
+      run_once: true
+
+    - name: Using Jinja shorthand syntax, extract DOM data.
+      debug:
+            var: op_power_chk
+
+    - name: Write Data to a file
+      template:
+        src: ./op_power_chk.j2
+        dest: ../../op_power_chk.json

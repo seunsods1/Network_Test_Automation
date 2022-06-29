@@ -1,0 +1,58 @@
+---
+ - name: PLAY - ISSUE SHOW COMMAND TO PULL ALL THE OPTICAL DATA FROM ALL THE OPTICS IN TESTBED SWITCH.
+   hosts: {{ sw_vendor }}_{{ sw_func }}
+   connection: local
+   gather_facts: no
+
+   vars:
+     os: ios
+     ansible_python_interpreter: /usr/bin/python3
+     ansible_become: yes
+     ansible_become_method: enable
+     ansible_network_os: cisco.ios.ios
+     ansible_user: {{ username }}
+     ansible_password: {{ passwd }}
+     ansible_connection: ansible.netcommon.network_cli
+
+   tasks:
+    - name: Run cli_command on Cisco IOS and display results
+      block:
+
+      - name: Run cli_command on Cisco IOS
+        ansible.netcommon.cli_command:
+          command: show interface transceiver detail
+        register: opdata_pull_a
+        run_once: true
+
+      {% for port_id,id in cis_id.items() %}
+      - name: Run cli_command on Cisco IOS
+        ansible.netcommon.cli_command:
+          command: show idprom interface {{ port_id }}
+        register: opdata_pull_{{ id }}
+        run_once: true
+      {% endfor %}
+
+      - name: Run cli_command on Cisco IOS
+        ansible.netcommon.cli_command:
+          command: show inventory
+        register: opdata_pull_b
+        run_once: true
+
+    - name: Using Jinja shorthand syntax, extract DOM data.
+      debug:
+              var: opdata_pull_a.stdout_lines
+
+    {% for port_id,id in cis_id.items() %}
+    - name: Using Jinja shorthand syntax, extract IDPROM data.
+      debug:
+              var: opdata_pull_{{ cis_id[port_id] }}.stdout_lines
+    {% endfor %}
+
+    - name: Using Jinja shorthand syntax, extract IDPROM data.
+      debug:
+              var: opdata_pull_b.stdout_lines
+
+    - name: Write Data to a file
+      template:
+        src: ./opdata_pull.j2
+        dest: /netauto/opdata_pull.json

@@ -1,0 +1,31 @@
+---
+ - name: LLDP Neighbor Discover - Issue SHOW command to gather the details of the endpoint of the optic under test.
+   hosts: {{ sw_vendor }}_{{ sw_func }}
+   roles:
+     - Juniper.junos
+   connection: local
+   gather_facts: no
+
+   tasks:
+    - name: TASK1 - ISSUE SHOW CMDS
+      juniper_junos_command:
+        commands:
+         - "show lldp neighbors interface {{ port_id }}"
+        provider:
+                  username: {{ username }}
+                  password: {{ passwd }}
+                  host: {{ ' "{{ inventory_hostname }}" '}}
+
+      register: lldp_neighbor
+      run_once: true
+
+    - name: Debug show cmd response with Jinja shorthand syntax
+      debug:
+              # var: idprom_val.stdout[:]
+              # var: idprom_val.stdout[0][:]
+              var: lldp_neighbor['stdout_lines']
+
+    - name: Write Data to a file
+      template:
+        src: ./lldp_neighbor.j2
+        dest: ../../lldp_neighbor.json

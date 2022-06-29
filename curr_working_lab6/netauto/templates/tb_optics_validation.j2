@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html lang = "en">
+  <head>
+    <title>Optical Test Report</title>
+    <meta charset = "UTF-8" />
+    <style type = "text/css">
+    table, td, th {
+      border: 1px solid black;
+    }
+    span {  content: "\2713";}
+    </style>
+  </head>
+
+  <body>
+    <section>
+            <form action="{{url_for('optic_validation')}}" method="post">
+                    <article>
+                        <p>Click button below to validate the optical data of all the optics in the testbed switch.</p>
+                        <p>
+                          <button type="submit">ENTER</button>
+                          {{ res }}
+                        </p>
+                    </article>
+            </form>
+    </section>
+  </body>
+
+</html>

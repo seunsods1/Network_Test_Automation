@@ -1,0 +1,33 @@
+---
+ - name: Endpoint2 TX & RX Pull - Issue SHOW command to gather TX and RX optical power values from endpoint switch
+   hosts: {{ sw_vendor }}_{{ sw_func }}
+   connection: ansible.netcommon.network_cli
+   gather_facts: no
+
+   vars:
+     os: ios
+     ansible_python_interpreter: /usr/bin/python3
+     ansible_become: yes
+     ansible_become_method: enable
+     ansible_network_os: cisco.ios.ios
+     ansible_user: {{ username }}
+     ansible_password: {{ passwd }}
+     ansible_connection: ansible.netcommon.network_cli
+
+   tasks:
+    - name: Run cli_command on Cisco IOS and display results
+      block:
+      - name: Run cli_command on Cisco IOS
+        ansible.netcommon.cli_command:
+          command: show interface {{endp_int2}} transceiver
+        register: endpoint2
+        run_once: true
+
+    - name: Debug show cmd response with Jinja shorthand syntax
+      debug:
+              var: endpoint2.stdout_lines
+
+    - name: Write Data to a file
+      template:
+        src: ./endpoint2.j2
+        dest: ./endpoint2.json

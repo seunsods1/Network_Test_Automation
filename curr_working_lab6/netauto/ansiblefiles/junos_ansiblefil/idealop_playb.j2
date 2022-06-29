@@ -1,0 +1,39 @@
+---
+ - name: Ideal Optic Playb - Issue SHOW command to gather the DOM, IDPROM and inventory data of the ideal optic selected by user.
+   hosts: {{ sw_vendor }}_{{ sw_func }}
+   roles:
+     - Juniper.junos
+   connection: local
+   gather_facts: no
+
+   tasks:
+    - name: TASK1 - ISSUE SHOW CMDS
+      juniper_junos_command:
+        commands:
+         - "show interface diagnostics optics {{ id_int }}"
+         - "{{ jun_idprom_cmd }}"
+         - "show chassis hardware"
+        provider:
+                  username: {{ username }}
+                  password: {{ passwd }}
+                  host: {{ ' "{{ inventory_hostname }}" '}}
+
+      register: idealop
+      run_once: true
+
+    - name: Debug show cmd response with Jinja shorthand syntax
+      debug:
+              var: idealop.results[0]['stdout_lines']
+
+    - name: Debug show cmd response with Jinja shorthand syntax
+      debug:
+              var: idealop.results[1]['stdout_lines']
+
+    - name: Debug show cmd response with Jinja shorthand syntax
+      debug:
+              var: idealop.results[2]['stdout_lines']
+
+    - name: Write Data to a file
+      template:
+        src: ./idealop.j2
+        dest: ../../resources/idealop.txt

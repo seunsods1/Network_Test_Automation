@@ -1,0 +1,3 @@
+{% for int_id,mod_id in port_id_dict.items() %}
+{{'{{ op_power_chk_'}}{{ port_id_dict[int_id] }}{{'.stdout_lines }}'}}
+{% endfor %}

@@ -1,0 +1,29 @@
+---
+ - name: PLAY1 - Issue SHOW command to gather TX and RX optical power values from endpoint switch
+   hosts: {{ sw_vendor }}_{{ sw_func }}
+   roles:
+     - Juniper.junos
+   connection: local
+   gather_facts: no
+
+   tasks:
+    - name: TASK1 - ISSUE SHOW CMDS
+      juniper_junos_command:
+        commands:
+         - "show interface diagnostics optics {{endp_int1}}"
+        provider:
+                  username: {{ username }}
+                  password: {{ passwd }}
+                  host: {{ ' "{{ inventory_hostname }}" '}}
+      register: endpoint1
+      run_once: true
+
+    - name: Debug show cmd response with Jinja shorthand syntax
+      debug:
+              # var: idprom_val.stdout[:]
+              # var: idprom_val.stdout[0][:]
+              var: endpoint1
+    - name: Write Data to a file
+      template:
+        src: ./endpoint1.j2
+        dest: ../../endpoint1.txt

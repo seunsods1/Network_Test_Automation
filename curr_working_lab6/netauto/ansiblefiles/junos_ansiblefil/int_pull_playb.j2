@@ -1,0 +1,30 @@
+---
+ - name: PLAY1 - ISSUE SHOW COMMAND TO PULL LIST OF CONNECTED INTERFACES.
+   hosts: {{ sw_vendor }}_{{ sw_func }}
+   roles:
+     - Juniper.junos
+   connection: local
+   gather_facts: no
+
+   tasks:
+    - name: TASK1 - ISSUE SHOW CMDS
+      juniper_junos_command:
+        commands:
+         - "show interfaces terse"
+        provider:
+                  username: {{ username }}
+                  password: {{ passwd }}
+                  host: {{ ' "{{ inventory_hostname }}" '}}
+
+      register: int_dat
+      run_once: true
+
+    - name: Debug show cmd response with Jinja shorthand syntax
+      debug:
+              # var: idprom_val.stdout[:]
+              # var: idprom_val.stdout[0][:]
+              var: int_dat['stdout_lines']
+    - name: Write Data to a file
+      template:
+        src: ./int_dat.j2
+        dest: ../../int_dat.txt
